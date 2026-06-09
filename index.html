@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserva - Vista Iliniza Lodge</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="booking-container">
+        
+        <aside class="brand-panel">
+            <div class="brand-header">
+                <h1>VISTA ILINIZA LODGE</h1>
+                <h2>TOACAZO-LATACUNGA</h2>
+            </div>
+            
+            <div class="brand-features">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <span>Naturaleza</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-bed"></i></div>
+                    <span>Alojamiento</span>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-fire"></i></div>
+                    <span>Fogata</span>
+                </div>
+            </div>
+
+            <div class="brand-social">
+                <a href="https://www.facebook.com/people/Vista-Iliniza-Lodge/100054441281494/" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/vista_iliniza?fbclid=IwY2xjawSMKfVleHRuA2FlbQIxMABicmlkETAxeU1QMGlCanB1SFpwSmI4c3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHqnUXMonNtAa1Lvt8oALJbV_gtnU76u88blCqhF7FOzVQEFCmtQCIWO4SfxQ_aem_agwMUrItxMghhRikoNd1kw" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@vista.iliniza.lodge" target="_blank" title="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </aside>
+
+        <section class="form-panel">
+            <div class="form-title">
+                <h2>Solicitud de Reserva</h2>
+                <span class="subtitle">Completa tus datos para vivir la experiencia</span>
+            </div>
+
+            <form id="reservaForm" class="reserva-form">
+                
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="nombres">Nombres completos</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user"></i>
+                            <input type="text" id="nombres" name="nombres" placeholder="Ej. Juan Pérez" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="cedula">Número de cédula</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-id-card"></i>
+                            <input type="text" id="cedula" name="cedula" placeholder="10 dígitos" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="correo">Correo electrónico</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-envelope"></i>
+                            <input type="email" id="correo" name="correo" placeholder="correo@ejemplo.com" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="celular">Número celular</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="text" id="celular" name="celular" placeholder="0990000000" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group full-width">
+                    <label for="cabana">Cabaña asignada</label>
+                    <div class="input-wrapper select-wrapper">
+                        <i class="fa-solid fa-house-chimney-window"></i>
+                        <select id="cabana" name="cabana" required>
+                            <option value="" disabled selected>Selecciona tu cabaña ideal</option>
+                            <option value="Vista Iliniza">Vista Iliniza</option>
+                            <option value="Vista Cielo">Vista Cielo</option>
+                            <option value="Vista Cotopaxi">Vista Cotopaxi</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <label for="ingreso">Fecha de ingreso</label>
+                        <div class="input-wrapper">
+                            <input type="date" id="ingreso" name="ingreso" required>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="salida">Fecha de salida</label>
+                        <div class="input-wrapper">
+                            <input type="date" id="salida" name="salida" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-submit">
+                    <span>Confirmar Reserva</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <p id="statusMessage" class="status-message"></p>
+            </form>
+        </section>
+        
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
