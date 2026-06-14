@@ -5,8 +5,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // 🔴 ESTA ES LA NUEVA URL REAL DE LA CUENTA DEL CLIENTE
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHiMKRmedyeaNDs6JEHotpe2Q00Svw_HZg6tHNQwROHz5rz5zCTspoBwoP6A4TFnuk/exec';
-
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4pFHwCfKEhodnpHwDAe8ZiPjp6fTMKnD_0WWdV7aXKL7p8Zw_ruuxYP_0l_7HGEMsLw/exec';
     const nombresInput = document.getElementById('nombres');
     const cedulaInput = document.getElementById('cedula');
     const celularInput = document.getElementById('celular');
