@@ -7,20 +7,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4pFHwCfKEhodnpHwDAe8ZiPjp6fTMKnD_0WWdV7aXKL7p8Zw_ruuxYP_0l_7HGEMsLw/exec';
 
     const nombresInput = document.getElementById('nombres');
+    const cedulaInput = document.getElementById('cedula');
     const celularInput = document.getElementById('celular');
     const btnAddAdulto = document.getElementById('btnAddAdulto');
     const btnAddMenor = document.getElementById('btnAddMenor');
     const contenedorAdultos = document.getElementById('contenedorAdultos');
     const contenedorMenores = document.getElementById('contenedorMenores');
 
-    // Restricciones de entrada básicas
-    nombresInput.addEventListener('input', function() {
-        this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-    });
+    // Función auxiliar: Permite solo letras, tildes, diéresis, eñes y espacios
+    function limpiarSoloLetrasConTilde(texto) {
+        return texto.replace(/[^a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]/g, '');
+    }
 
-    celularInput.addEventListener('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
-    });
+    // 1. RESTRICCIONES DE ENTRADA: NOMBRE DEL TITULAR (Con tildes y eñes)
+    if (nombresInput) {
+        nombresInput.addEventListener('input', function() {
+            this.value = limpiarSoloLetrasConTilde(this.value);
+        });
+    }
+
+    // 2. RESTRICCIONES DE ENTRADA: SOLO NÚMEROS ESTRICTOS (Cédula y Celular)
+    if (cedulaInput) {
+        cedulaInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+    }
+
+    if (celularInput) {
+        celularInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
+        });
+    }
 
     // ======================================================
     // DINÁMICA: ADULTOS ADICIONALES
@@ -51,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="input-group full-width">
                     <label>Número de Identificación</label>
                     <div class="input-wrapper">
-                        <input type="text" class="adulto-doc" placeholder="N.º Cédula o Pasaporte" required>
+                        <input type="text" class="adulto-doc" placeholder="N.º Cédula (10 dígitos)" required>
                     </div>
                 </div>
             </div>
@@ -60,18 +77,34 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Al cambiar tipo de documento, alertar si es extranjero
+        const inputNombre = div.querySelector('.adulto-nombre');
+        const inputDoc = div.querySelector('.adulto-doc');
         const selectTipo = div.querySelector('.adulto-tipo');
         const alertBox = div.querySelector('.passport-alert');
-        selectTipo.addEventListener('change', () => {
-            if (selectTipo.value.includes('Pasaporte')) {
-                alertBox.classList.remove('hidden-section');
-            } else {
-                alertBox.classList.add('hidden-section');
+
+        // Solo letras con tildes y eñes para el acompañante
+        inputNombre.addEventListener('input', function() {
+            this.value = limpiarSoloLetrasConTilde(this.value);
+        });
+
+        // Solo números si es cédula; alfanumérico si es pasaporte
+        inputDoc.addEventListener('input', function() {
+            if (selectTipo.value.includes('Cédula')) {
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
             }
         });
 
-        // Eliminar tarjeta
+        selectTipo.addEventListener('change', () => {
+            if (selectTipo.value.includes('Pasaporte')) {
+                alertBox.classList.remove('hidden-section');
+                inputDoc.placeholder = "N.º Pasaporte";
+            } else {
+                alertBox.classList.add('hidden-section');
+                inputDoc.placeholder = "N.º Cédula (10 dígitos)";
+                inputDoc.value = inputDoc.value.replace(/[^0-9]/g, '').slice(0, 10);
+            }
+        });
+
         div.querySelector('.btn-remove-item').addEventListener('click', () => div.remove());
         contenedorAdultos.appendChild(div);
     });
@@ -108,11 +141,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="input-group">
                     <label>Relación o Parentesco</label>
                     <div class="input-wrapper">
-                        <input type="text" class="menor-relacion" placeholder="Ej: Madre, Padre, Tutor" required>
+                        <input type="text" class="menor-relacion" placeholder="Ej: Madre, Padre, Tío, Tutor" required>
                     </div>
                 </div>
             </div>
         `;
+
+        const inputNomMenor = div.querySelector('.menor-nombre');
+        const inputDocMenor = div.querySelector('.menor-doc');
+        const inputResp = div.querySelector('.menor-responsable');
+        const inputRel = div.querySelector('.menor-relacion');
+
+        // Nombres, adultos a cargo y parentescos: aceptan letras, tildes y eñes
+        inputNomMenor.addEventListener('input', function() {
+            this.value = limpiarSoloLetrasConTilde(this.value);
+        });
+        inputResp.addEventListener('input', function() {
+            this.value = limpiarSoloLetrasConTilde(this.value);
+        });
+        inputRel.addEventListener('input', function() {
+            this.value = limpiarSoloLetrasConTilde(this.value);
+        });
+
+        // Documento del menor (permite letras o números por si es pasaporte o cédula)
+        inputDocMenor.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9a-zA-Z]/g, '');
+        });
+
         div.querySelector('.btn-remove-item').addEventListener('click', () => div.remove());
         contenedorMenores.appendChild(div);
     });
@@ -168,16 +223,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const textoMenores = listaMenores.length > 0 ? listaMenores.join(' | ') : 'Sin menores';
 
-        // 3. Formatear hora de llegada con apóstrofe para evitar desfases de zona horaria en Google Sheets
+        // 3. Formatear hora de llegada con apóstrofe
         const valorHora = document.getElementById('horaLlegada').value;
         const horaFormateada = valorHora ? "'" + valorHora : "No especificada";
 
-        // 4. Empaquetar formulario
-        const celularFormateado = "'" + celularInput.value;
+        // 4. Empaquetar formulario (con apóstrofe para preservar ceros a la izquierda)
+        const cedulaFormateada = "'" + cedulaInput.value.trim();
+        const celularFormateado = "'" + celularInput.value.trim();
+
         const formData = {
             action: "create",
             nombres: nombresInput.value.trim(),
-            cedula: document.getElementById('cedula').value.trim(),
+            cedula: cedulaFormateada,
             correo: document.getElementById('correo').value.trim(),
             celular: celularFormateado,
             cabana: document.getElementById('cabana').value,
