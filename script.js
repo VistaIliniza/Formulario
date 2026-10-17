@@ -12,8 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAddMenor = document.getElementById('btnAddMenor');
     const contenedorAdultos = document.getElementById('contenedorAdultos');
     const contenedorMenores = document.getElementById('contenedorMenores');
-    const checkFactura = document.getElementById('checkFactura');
-    const seccionFactura = document.getElementById('seccionFactura');
 
     // Restricciones de entrada básicas
     nombresInput.addEventListener('input', function() {
@@ -22,15 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     celularInput.addEventListener('input', function() {
         this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
-    });
-
-    // Desplegar datos de factura
-    checkFactura.addEventListener('change', function() {
-        if (this.checked) {
-            seccionFactura.classList.remove('hidden-section');
-        } else {
-            seccionFactura.classList.add('hidden-section');
-        }
     });
 
     // ======================================================
@@ -195,8 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
             menores: textoMenores,
             vehiculo: document.getElementById('vehiculo').value.trim() || "No aplica",
             mascota: document.getElementById('mascota').value.trim() || "No",
-            factura: checkFactura.checked ? "Sí" : "No",
-            datosFactura: checkFactura.checked ? (document.getElementById('datosFactura').value.trim() || "Pendiente") : "No aplica"
+            factura: "No",
+            datosFactura: "No aplica"
         };
 
         try {
@@ -214,7 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
             form.reset(); 
             contenedorAdultos.innerHTML = '';
             contenedorMenores.innerHTML = '';
-            seccionFactura.classList.add('hidden-section');
 
         } catch (error) {
             console.error('Error de conexión:', error);
