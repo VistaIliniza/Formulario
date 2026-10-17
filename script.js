@@ -168,7 +168,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const textoMenores = listaMenores.length > 0 ? listaMenores.join(' | ') : 'Sin menores';
 
-        // 3. Empaquetar formulario
+        // 3. Formatear hora de llegada con apóstrofe para evitar desfases de zona horaria en Google Sheets
+        const valorHora = document.getElementById('horaLlegada').value;
+        const horaFormateada = valorHora ? "'" + valorHora : "No especificada";
+
+        // 4. Empaquetar formulario
         const celularFormateado = "'" + celularInput.value;
         const formData = {
             action: "create",
@@ -179,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cabana: document.getElementById('cabana').value,
             ingreso: document.getElementById('ingreso').value,
             salida: document.getElementById('salida').value,
-            horaLlegada: document.getElementById('horaLlegada').value || "No especificada",
+            horaLlegada: horaFormateada,
             adultos: textoAdultos,
             menores: textoMenores,
             vehiculo: document.getElementById('vehiculo').value.trim() || "No aplica",
